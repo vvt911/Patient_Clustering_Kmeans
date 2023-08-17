@@ -148,5 +148,6 @@
 	<classpathentry kind="lib" path="C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-web-proxy-3.3.0.jar"/>
 	<classpathentry kind="lib" path="C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-services-api-3.3.0.jar"/>
 	<classpathentry kind="lib" path="C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-services-core-3.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/hadoop-3.3.0/share/hadoop/mongodb/mongo-java-driver-3.12.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

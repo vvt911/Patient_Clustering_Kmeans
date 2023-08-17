@@ -1,3 +1,10 @@
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -63,6 +70,27 @@ public class Main extends Configured implements Tool {
 		br.close();
 		return points;
 
+	}
+
+	public static PointWritable[] initRandomCentroids(int kClusters, List<PointWritable> dataPoints,
+			Configuration conf) {
+		System.out.println("Initializing random " + kClusters + " centroids...");
+		PointWritable[] points = new PointWritable[kClusters];
+
+		List<Integer> lstPointIndices = new ArrayList<>();
+		Random random = new Random();
+		while (lstPointIndices.size() < kClusters) {
+			int index = random.nextInt(dataPoints.size());
+			if (!lstPointIndices.contains(index)) {
+				lstPointIndices.add(index);
+			}
+		}
+
+		for (int i = 0; i < kClusters; i++) {
+			points[i] = dataPoints.get(lstPointIndices.get(i));
+		}
+
+		return points;
 	}
 
 	public static void saveCentroidsForShared(Configuration conf, PointWritable[] points) {
@@ -157,7 +185,7 @@ public class Main extends Configured implements Tool {
 	public int run(String[] args) throws Exception {
 
 		Configuration conf = getConf();
-		String inputFilePath = conf.get("in", null);
+//		String inputFilePath = conf.get("in", null);
 		String outputFolderPath = conf.get("out", null);
 		String outputFileName = conf.get("result", "result.txt");
 
@@ -166,15 +194,34 @@ public class Main extends Configured implements Tool {
 		int numLineOfInputFile = conf.getInt("lines", 0);
 		MAX_LOOP = conf.getInt("maxloop", 50);
 		int nReduceTask = conf.getInt("NumReduceTask", 1);
-		if (inputFilePath == null || outputFolderPath == null || numLineOfInputFile == 0) {
-			System.err.printf(
-					"Usage: %s -Din <input file name> -Dlines <number of lines in input file> -Dout <Folder ouput> -Dresult <output file result> -Dk <number of clusters> -Dthresh <Threshold>\n",
-					getClass().getSimpleName());
-			ToolRunner.printGenericCommandUsage(System.err);
-			return -1;
+//		if (inputFilePath == null || outputFolderPath == null || numLineOfInputFile == 0) {
+//			System.err.printf(
+//					"Usage: %s -Din <input file name> -Dlines <number of lines in input file> -Dout <Folder ouput> -Dresult <output file result> -Dk <number of clusters> -Dthresh <Threshold>\n",
+//					getClass().getSimpleName());
+//			ToolRunner.printGenericCommandUsage(System.err);
+//			return -1;
+//		}
+
+		String mongoHost = conf.get("mongoHost", "127.0.0.1");
+		int mongoPort = conf.getInt("mongoPort", 27017);
+		String dbName = conf.get("dbName", "patient");
+		String collectionName = conf.get("collectionName", "patient");
+		MongoClient mongoClient = new MongoClient(mongoHost, mongoPort);
+		MongoDatabase database = mongoClient.getDatabase(dbName);
+		MongoCollection<Document> collection = database.getCollection(collectionName);
+
+		// Fetch data from MongoDB
+		List<PointWritable> dataPoints = new ArrayList<>();
+		FindIterable<Document> documents = collection.find();
+		for (Document document : documents) {
+			String pointData = document.getString("data");
+			PointWritable point = new PointWritable(pointData.split(","));
+			dataPoints.add(point);
 		}
+		mongoClient.close();
+
 		System.out.println("---------------INPUT PARAMETERS---------------");
-		System.out.println("inputFilePath:" + inputFilePath);
+//		System.out.println("inputFilePath:" + inputFilePath);
 		System.out.println("outputFolderPath:" + outputFolderPath);
 		System.out.println("outputFileName:" + outputFileName);
 		System.out.println("maxloop:" + MAX_LOOP);
@@ -182,9 +229,14 @@ public class Main extends Configured implements Tool {
 		System.out.println("nClusters:" + nClusters);
 		System.out.println("threshold:" + thresholdStop);
 		System.out.println("NumReduceTask:" + nReduceTask);
+		System.out.println("mongoHost:" + mongoHost);
+        System.out.println("mongoPort:" + mongoPort);
+        System.out.println("dbName:" + dbName);
+        System.out.println("collectionName:" + collectionName);
 
 		System.out.println("--------------- STATR ---------------");
-		PointWritable[] oldCentroidPoints = initRandomCentroids(nClusters, numLineOfInputFile, inputFilePath, conf);
+//		PointWritable[] oldCentroidPoints = initRandomCentroids(nClusters, numLineOfInputFile, inputFilePath, conf);
+		PointWritable[] oldCentroidPoints = initRandomCentroids(nClusters, dataPoints, conf);
 		PointWritable[] centroidsInit = copyCentroids(oldCentroidPoints);
 		printCentroids(oldCentroidPoints, "init");
 		saveCentroidsForShared(conf, oldCentroidPoints);
@@ -207,7 +259,7 @@ public class Main extends Configured implements Tool {
 			job.setOutputKeyClass(Text.class);
 			job.setOutputValueClass(Text.class);
 
-			FileInputFormat.addInputPath(job, new Path(inputFilePath));
+//			FileInputFormat.addInputPath(job, new Path(inputFilePath));
 
 			FileOutputFormat.setOutputPath(job, new Path(outputFolderPath));
 			job.setOutputFormatClass(TextOutputFormat.class);
