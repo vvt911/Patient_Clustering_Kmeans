@@ -17,13 +17,11 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
@@ -122,48 +120,21 @@ public class Main extends Configured implements Tool {
 		return true;
 	}
 
-//	private static void writeFinalResult(Configuration conf, PointWritable[] centroidsFound, String outputFilePath,
-//			PointWritable[] centroidsInit) throws IOException {
-//		FileSystem hdfs = FileSystem.get(conf);
-//		FSDataOutputStream dos = hdfs.create(new Path(outputFilePath), true);
-//		BufferedWriter br = new BufferedWriter(new OutputStreamWriter(dos));
-//
-//		for (int i = 0; i < centroidsFound.length; i++) {
-//			br.write(centroidsFound[i].toString());
-//			br.newLine();
-//			System.out.println("Centroid[" + i + "]:  (" + centroidsFound[i] + ")  init: (" + centroidsInit[i] + ")");
-//		}
-//
-//		br.close();
-//		hdfs.close();
-//	}
-	
-	public static void writeFinalResult(Configuration conf, PointWritable[] centroidsFound, String outputFilePath, PointWritable[] centroidsInit, PointWritable[] dataPoints) throws IOException {
-	    FileSystem hdfs = FileSystem.get(conf);
-	    FSDataOutputStream dos = hdfs.create(new Path(outputFilePath), true);
-	    BufferedWriter br = new BufferedWriter(new OutputStreamWriter(dos));
+	private static void writeFinalResult(Configuration conf, PointWritable[] centroidsFound, String outputFilePath,
+			PointWritable[] centroidsInit) throws IOException {
+		FileSystem hdfs = FileSystem.get(conf);
+		FSDataOutputStream dos = hdfs.create(new Path(outputFilePath), true);
+		BufferedWriter br = new BufferedWriter(new OutputStreamWriter(dos));
 
-	    for (int i = 0; i < centroidsFound.length; i++) {
-	        br.write("Final Centroid[" + i + "]: " + centroidsFound[i].toString());
-	        br.newLine();
-	        br.write("Initial Centroid[" + i + "]: " + centroidsInit[i].toString());
-	        br.newLine();
+		for (int i = 0; i < centroidsFound.length; i++) {
+			String clusterName = "Cluster " + i;
+			br.write(clusterName + ": " + centroidsFound[i].toString());
+			br.newLine();
+			System.out.println("Centroid[" + i + "]:  (" + centroidsFound[i] + ")  init: (" + centroidsInit[i] + ")");
+		}
 
-	        br.write("Data Points assigned to Cluster " + i + ":");
-	        br.newLine();
-	        for (PointWritable dataPoint : dataPoints) {
-	        	System.out.println("=====> ClusterID: " + dataPoint.getClusterId());
-	            if (dataPoint.getClusterId() == i) {
-	                br.write(dataPoint.toString() + " (Cluster " + dataPoint.getClusterId() + ")");
-	                br.newLine();
-	            }
-	        }
-
-	        br.newLine();
-	    }
-
-	    br.close();
-	    hdfs.close();
+		br.close();
+		hdfs.close();
 	}
 
 	public static PointWritable[] copyCentroids(PointWritable[] points) {
@@ -259,13 +230,19 @@ public class Main extends Configured implements Tool {
 				break;
 			} else {
 				saveCentroidsForShared(conf, newCentroidPoints);
-			}
 
+				if (nLoop > 1) {
+					Path outputPath = new Path("/patient-output-points");
+					FileSystem hdfs = FileSystem.get(conf);
+					hdfs.delete(outputPath, true);
+					hdfs.mkdirs(outputPath);
+				}
+			}
 		}
 		if (newCentroidPoints != null) {
 			System.out.println("------------------- FINAL RESULT -------------------");
-//			writeFinalResult(conf, newCentroidPoints, outputFolderPath + "/" + outputFileName, centroidsInit);
-			writeFinalResult(conf, newCentroidPoints, outputFolderPath + "/" + outputFileName, centroidsInit, oldCentroidPoints);
+			writeFinalResult(conf, newCentroidPoints, outputFolderPath + "/" + outputFileName, centroidsInit);
+
 		}
 		System.out.println("----------------------------------------------");
 		System.out.println("K-MEANS CLUSTERING FINISHED!");

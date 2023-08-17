@@ -9,8 +9,7 @@ public class PointWritable implements Writable {
 	private float[] attributes = null;
 	private int dim;
 	private int nPoints;
-	private int clusterId;
-	
+
 	public PointWritable() {
 		this.dim = 0;
 	}
@@ -21,14 +20,6 @@ public class PointWritable implements Writable {
 
 	public PointWritable(final String[] s) {
 		this.set(s);
-	}
-
-	public int getClusterId() {
-		return clusterId;
-	}
-
-	public void setClusterId(int clusterId) {
-		this.clusterId = clusterId;
 	}
 
 	public static PointWritable copy(final PointWritable p) {

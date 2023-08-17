@@ -1,5 +1,4 @@
 import java.io.IOException;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 
@@ -18,7 +17,6 @@ public class KMapper extends Mapper<LongWritable, Text, LongWritable, PointWrita
 		this.currCentroids = new PointWritable[nClusters];
 		for (int i = 0; i < nClusters; i++) {
 			String[] centroid = context.getConfiguration().getStrings("C" + i);
-			// this.currCentroids[i] = new PointWritable(centroid[0].split(","));
 			this.currCentroids[i] = new PointWritable(centroid);
 		}
 	}
@@ -38,7 +36,6 @@ public class KMapper extends Mapper<LongWritable, Text, LongWritable, PointWrita
 				minDistance = distance;
 			}
 		}
-		pointInput.setClusterId(centroidIdNearest);
 		centroidId.set(centroidIdNearest);
 		context.write(centroidId, pointInput);
 	}
