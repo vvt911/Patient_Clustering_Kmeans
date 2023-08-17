@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="hadoop-yarn-api-3.3.0">
+    <CLASSES>
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-api-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-applications-catalog-webapp-3.3.0.war!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-applications-mawo-core-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-applications-unmanaged-am-launcher-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-client-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-common-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-applicationhistoryservice-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-common-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-nodemanager-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-resourcemanager-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-router-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-sharedcachemanager-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-timeline-pluginstorage-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-timelineservice-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-server-web-proxy-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-services-api-3.3.0.jar!/" />
+      <root url="jar://C:/hadoop-3.3.0/share/hadoop/yarn/hadoop-yarn-services-core-3.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
