@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Data Entry</title>
+</head>
+<body>
+    <h1>Patient Data Entry</h1>
+    <form id="patientForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="18" max="90" required><br><br>
+
+        <label for="chest_pain_type">Chest Pain Type:</label>
+        <input type="number" id="chest_pain_type" name="chest_pain_type" min="1" max="4" required><br><br>
+
+        <label for="blood_pressure">Blood Pressure:</label>
+        <input type="number" id="blood_pressure" name="blood_pressure" min="90" max="180" required><br><br>
+
+        <label for="cholesterol">Cholesterol:</label>
+        <input type="number" id="cholesterol" name="cholesterol" min="120" max="300" required><br><br>
+
+        <label for="max_heart_rate">Max Heart Rate:</label>
+        <input type="number" id="max_heart_rate" name="max_heart_rate" min="70" max="220" required><br><br>
+
+        <label for="exercise_angina">Exercise Angina:</label>
+        <select id="exercise_angina" name="exercise_angina" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="plasma_glucose">Plasma Glucose:</label>
+        <input type="number" id="plasma_glucose" name="plasma_glucose" min="70" max="250" required><br><br>
+
+        <label for="insulin">Insulin:</label>
+        <input type="number" id="insulin" name="insulin" min="80" max="190" required><br><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" id="bmi" name="bmi" min="10" max="50" step="0.1" required><br><br>
+
+        <label for="diabetes_pedigree">Diabetes Pedigree:</label>
+        <input type="number" id="diabetes_pedigree" name="diabetes_pedigree" min="0.1" max="2.5" step="0.1" required><br><br>
+
+        <label for="hypertension">Hypertension:</label>
+        <select id="hypertension" name="hypertension" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="heart_disease">Heart Disease:</label>
+        <select id="heart_disease" name="heart_disease" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="smoking_status">Smoking Status:</label>
+        <select id="smoking_status" name="smoking_status" required>
+            <option value="Smoker">Smoker</option>
+            <option value="Non-Smoker">Non-Smoker</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
