@@ -1,5 +1,7 @@
 const { get } = require('mongoose');
 const { Centroids} = require('../model/centroidModel');
+const { preprocessData } = require('../utils/dataUtils');
+const { calculateDistance, getClusterFeatures } = require('../utils/centroidUtil');
 
 const createCentroids = async (req, res) => {
     try {
@@ -47,7 +49,7 @@ const createCentroids = async (req, res) => {
 // get all centroids and calculate the distance between each centroid and and patient in req.body
 const getCentroidsNearest = async (req, res) => {
     try {
-        const centroids = await Centroids.find();
+        const centroids = await Centroids.find().sort({ age: -1 });
         const centroidData = centroids.map(centroid => {
             return {
                 age: centroid.age,
@@ -66,19 +68,20 @@ const getCentroidsNearest = async (req, res) => {
             };
         });
         const patient = req.body;
-        console.log(patient);
+        const patientProcessed = await preprocessData(patient);
 
         let minDistance = Infinity;
         let centroidNearest = centroidData[0];
         for (let i = 0; i < centroidData.length; i++) {
             const centroid = centroidData[i];
-            const distance = await calculateDistance(centroid, patient);
+            const distance = await calculateDistance(centroid, patientProcessed);
             if (minDistance > distance) {
                 minDistance = distance;
                 centroidNearest = centroid;
             }
         }
-        res.json(centroidNearest);
+        const clusteredFetures = await getClusterFeatures(centroidNearest, centroidData);
+        res.json(clusteredFetures);
     } catch (error) {
         res.status(500).json({
             status: 'error',
@@ -87,24 +90,6 @@ const getCentroidsNearest = async (req, res) => {
     }
 }; 
 
-// calculate the distance between two points
-const calculateDistance = async (point1, point2) => {
-    const distance = Math.sqrt(
-        Math.pow(point1.age - point2.age, 2) +
-        Math.pow(point1.chest_pain_type - point2.chest_pain_type, 2) +
-        Math.pow(point1.blood_pressure - point2.blood_pressure, 2) +
-        Math.pow(point1.cholesterol - point2.cholesterol, 2) +
-        Math.pow(point1.max_heart_rate - point2.max_heart_rate, 2) +
-        Math.pow(point1.exercise_angina - point2.exercise_angina, 2) +
-        Math.pow(point1.plasma_glucose - point2.plasma_glucose, 2) +
-        Math.pow(point1.insulin - point2.insulin, 2) +
-        Math.pow(point1.bmi - point2.bmi, 2) +
-        Math.pow(point1.diabetes_pedigree - point2.diabetes_pedigree, 2) +
-        Math.pow(point1.hypertension - point2.hypertension, 2) +
-        Math.pow(point1.heart_disease - point2.heart_disease, 2) +
-        Math.pow(point1.smoking_status - point2.smoking_status, 2)
-    );
-    return distance;
-};
+
 
 module.exports = { createCentroids, getCentroidsNearest};

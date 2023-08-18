@@ -15,7 +15,7 @@ try {
 }
 
 const rl = readline.createInterface({
-    input: fs.createReadStream('patient_dataset_normalization_notitle.csv'),
+    input: fs.createReadStream('patient_dataset_normalization.csv'),
     output: process.stdout,
     terminal: false
 });
@@ -42,8 +42,8 @@ const Patient = mongoose.model('patient', patientSchema);
 rl.on('line', async (line) => {
     const data = line.split(',');
     const patient = new Patient({
-        age: parseInt(data[0]),
-        chest_pain_type: parseInt(data[1]),
+        age: parseFloat(data[0]),
+        chest_pain_type: parseFloat(data[1]),
         blood_pressure: parseFloat(data[2]),
         cholesterol: parseFloat(data[3]),
         max_heart_rate: parseFloat(data[4]),

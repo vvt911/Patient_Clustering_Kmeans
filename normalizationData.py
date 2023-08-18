@@ -21,7 +21,7 @@ data['smoking_status'].fillna(data['smoking_status'].mode()[0], inplace=True)
 data = data[(data['blood_pressure'] >= 90) & (data['blood_pressure'] <= 180)]
 
 # Chuẩn hóa Min-Max Scaling cho các thuộc tính
-columns_to_scale = ['blood_pressure', 'cholesterol', 'max_heart_rate', 'plasma_glucose', 
+columns_to_scale = ['chest_pain_type', 'blood_pressure', 'cholesterol', 'max_heart_rate', 'plasma_glucose', 
                     'insulin', 'bmi', 'diabetes_pedigree']
 data[columns_to_scale] = ((data[columns_to_scale] - data[columns_to_scale].min()) / 
                          (data[columns_to_scale].max() - data[columns_to_scale].min()))
