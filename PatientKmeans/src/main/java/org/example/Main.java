@@ -152,7 +152,7 @@ public class Main extends Configured implements Tool {
         String patientInputFolder = "/patient-input/";
         String patientInputFileName = "patient.csv";
         String inputFilePath = patientInputFolder + patientInputFileName;
-        DataFetcher.fetchAndWriteDataToHDFS(conf, inputFilePath);
+        MongoDBProcess.fetchAndWriteDataToHDFS(conf, inputFilePath);
 
 //		String inputFilePath = conf.get("in", null);
         String outputFolderPath = conf.get("out", null);
@@ -219,6 +219,7 @@ public class Main extends Configured implements Tool {
             }
 
             newCentroidPoints = readCentroidsFromReducerOutput(conf, nClusters, outputFolderPath);
+
             printCentroids(newCentroidPoints, "new");
             boolean needStop = checkStopKMean(newCentroidPoints, oldCentroidPoints, thresholdStop);
 
@@ -240,7 +241,7 @@ public class Main extends Configured implements Tool {
         if (newCentroidPoints != null) {
             System.out.println("------------------- FINAL RESULT -------------------");
             writeFinalResult(conf, newCentroidPoints, outputFolderPath + "/" + outputFileName, centroidsInit);
-
+            MongoDBProcess.sendCentroidsToApi(newCentroidPoints);
         }
         System.out.println("----------------------------------------------");
         System.out.println("K-MEANS CLUSTERING FINISHED!");

@@ -27,12 +27,6 @@
             <version>3.3.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mongodb.mongo-hadoop/mongo-hadoop-core -->
-        <dependency>
-            <groupId>org.mongodb.mongo-hadoop</groupId>
-            <artifactId>mongo-hadoop-core</artifactId>
-            <version>2.0.2</version>
-        </dependency>
 
     </dependencies>
 

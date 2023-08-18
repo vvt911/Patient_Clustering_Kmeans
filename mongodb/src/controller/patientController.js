@@ -12,4 +12,6 @@ const getPatients = async (req, res) => {
     }
 };
 
+
+
 module.exports = { getPatients };
