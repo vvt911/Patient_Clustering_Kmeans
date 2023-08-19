@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok) {
                 const predictionResult = await response.json();
-                resultParagraph.textContent  = `${predictionResult.name}: ${predictionResult.features}`
-                resultBox.classList.add(`${predictionResult.color_text}`);
+                resultParagraph.textContent  = `${predictionResult.data.clusteredFetures.name}: ${predictionResult.data.clusteredFetures.features}`
+                resultBox.classList.add(`${predictionResult.data.clusteredFetures.color_text}`);
             } else {
                 resultParagraph.textContent = "Prediction failed.";
             }

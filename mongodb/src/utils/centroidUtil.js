@@ -22,19 +22,19 @@ const getClusterFeatures = async (centroid, centroidData) => {
     if (centroid === centroidData[0]) {
         return {
             name: "Senior Health",
-            features: "Tuổi cao, huyết áp thấp, nhịp tim cực đại cao, nguy cơ tiểu đường thấp.",
+            features: "Tuổi trung bình cao, huyết áp thấp, nhịp tim cao, nguy cơ tiểu đường thấp.",
             color_text: "text-danger"
         };
     } else if (centroid === centroidData[1]) {
         return {
             name: "Active Adults",
-            features: "Tuổi trung bình, nhịp tim cực đại trung bình, huyết áp tăng, nguy cơ tiểu đường cao.",
+            features: "Tuổi trung bình, nhịp tim trung bình, huyết áp tăng, nguy cơ tiểu đường cao.",
             color_text: "text-warning"
         };
     } else if (centroid === centroidData[2]) {
         return {
             name: "Young and Fit",
-            features: "Tuổi thấp, nhịp tim cực đại cao, nguy cơ huyết áp cao thấp, nguy cơ bệnh tim thấp.",
+            features: "Tuổi trung bình thấp, nhịp tim cao, nguy cơ huyết áp cao thấp, nguy cơ bệnh tim thấp.",
             color_text: "text-success"
         };
     }

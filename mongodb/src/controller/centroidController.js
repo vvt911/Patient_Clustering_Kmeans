@@ -1,5 +1,6 @@
 const { get } = require('mongoose');
 const { Centroids} = require('../model/centroidModel');
+const { Patients } = require('../model/patientModel');
 const { preprocessData } = require('../utils/dataUtils');
 const { calculateDistance, getClusterFeatures } = require('../utils/centroidUtil');
 
@@ -68,7 +69,7 @@ const getCentroidsNearest = async (req, res) => {
             };
         });
         const patient = req.body;
-        const patientProcessed = await preprocessData(patient);
+        const patientProcessed = new Patients(await preprocessData(patient));
 
         let minDistance = Infinity;
         let centroidNearest = centroidData[0];
@@ -80,8 +81,18 @@ const getCentroidsNearest = async (req, res) => {
                 centroidNearest = centroid;
             }
         }
+        
         const clusteredFetures = await getClusterFeatures(centroidNearest, centroidData);
-        res.json(clusteredFetures);
+        const result = await patientProcessed.save();
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                patient: result,
+                centroid: centroidNearest,
+                clusteredFetures: clusteredFetures,
+            },
+        });
     } catch (error) {
         res.status(500).json({
             status: 'error',
