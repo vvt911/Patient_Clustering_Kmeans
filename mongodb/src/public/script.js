@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("patientForm");
-    const resultParagraph = document.getElementById("result");
+    const resultTitleParagraph = document.getElementById("result-title");
+    const resultContentParagraph = document.getElementById("result-content");
+    const resultBox = document.getElementById("box-result");
+
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -37,12 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok) {
                 const predictionResult = await response.json();
-                resultParagraph.textContent = `Prediction Result: ${JSON.stringify(predictionResult)}`;
+                resultTitleParagraph.textContent = `Prediction Result: ${predictionResult.name}`;
+                resultContentParagraph.textContent  = `Features Result: ${predictionResult.features}`
+                console.log(predictionResult);
+                resultBox.classList.add(`${predictionResult.color_text}`);
             } else {
-                resultParagraph.textContent = "Prediction failed.";
+                resultTitleParagraph.textContent = "Prediction failed.";
             }
         } catch (error) {
-            resultParagraph.textContent = "An error occurred during prediction.";
+            resultTitleParagraph.textContent = "An error occurred during prediction.";
             console.error("Prediction error:", error);
         }
     });

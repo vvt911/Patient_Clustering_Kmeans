@@ -5,7 +5,6 @@ const minMaxScaling = (value, min, max) => {
 
 const preprocessData = async (data) => {
     const ranges = {
-        age: { min: 18, max: 90 },
         chest_pain_type: { min: 1, max: 4 },
         blood_pressure: { min: 90, max: 180 },
         cholesterol: { min: 120, max: 300 },

@@ -15,7 +15,7 @@ try {
 }
 
 const rl = readline.createInterface({
-    input: fs.createReadStream('patient_dataset_normalization.csv'),
+    input: fs.createReadStream('../../../patient_dataset_normalization.csv'),
     output: process.stdout,
     terminal: false
 });
