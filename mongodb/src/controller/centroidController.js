@@ -6,11 +6,6 @@ const { calculateDistance, getClusterFeatures } = require('../utils/centroidUtil
 
 const createCentroids = async (req, res) => {
     try {
-        const existingCentroids = await Centroids.find();
-        if (existingCentroids.length > 0) {
-            await Centroids.deleteMany({});
-        }
-
         const centroidsToAdd = req.body.map(centroidString => {
             const [age, chest_pain_type, blood_pressure, cholesterol, max_heart_rate, exercise_angina, plasma_glucose, insulin, bmi, diabetes_pedigree, hypertension, heart_disease, smoking_status] = centroidString.split(', ');
 
@@ -30,7 +25,12 @@ const createCentroids = async (req, res) => {
                 smoking_status: parseFloat(smoking_status),
             };
         });
-
+        
+        const existingCentroids = await Centroids.find();
+        if (existingCentroids.length > 0) {
+            await Centroids.deleteMany({});
+        }
+        
         const createdCentroids = await Centroids.create(centroidsToAdd);
 
         res.status(201).json({

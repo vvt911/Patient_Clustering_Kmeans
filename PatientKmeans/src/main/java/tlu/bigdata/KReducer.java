@@ -1,4 +1,4 @@
-package org.example;
+package tlu.bigdata;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

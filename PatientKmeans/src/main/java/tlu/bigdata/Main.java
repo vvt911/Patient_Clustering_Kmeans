@@ -1,4 +1,4 @@
-package org.example;
+package tlu.bigdata;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -241,7 +241,7 @@ public class Main extends Configured implements Tool {
         if (newCentroidPoints != null) {
             System.out.println("------------------- FINAL RESULT -------------------");
             writeFinalResult(conf, newCentroidPoints, outputFolderPath + "/" + outputFileName, centroidsInit);
-            MongoDBProcess.sendCentroidsToApi(newCentroidPoints);
+            MongoDBProcess.saveCentroidsToMongoDB(newCentroidPoints);
         }
         System.out.println("----------------------------------------------");
         System.out.println("K-MEANS CLUSTERING FINISHED!");

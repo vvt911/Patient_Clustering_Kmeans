@@ -1,4 +1,4 @@
-package org.example;
+package tlu.bigdata;
 
 import java.io.*;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class MongoDBProcess {
         }
     }
 
-    public static void sendCentroidsToApi(PointWritable[] centroids) {
+    public static void saveCentroidsToMongoDB(PointWritable[] centroids) {
         String [] centroidsString = new String[centroids.length];
         for (int i = 0; i < centroids.length; i++) {
             centroidsString[i] = '"' + centroids[i].toString() + '"';
